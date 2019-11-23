@@ -31,14 +31,10 @@ const compare = function(prop){
     };
 };
 
-export const filter = function(data, filters, actives){
-    var activeFilters = filters.filter(function(filt){
-        return actives.includes(filt.name);
-    });
-
+export const filter = function(data, activefilters){
     data = data.filter(function(item){
-        for (var i = 0, iLength = activeFilters.length; i < iLength; i++){
-            if (activeFilters[i].condition(item)) return true;
+        for (var i = 0, iLength = activefilters.length; i < iLength; i++){
+            if (activefilters[i].condition(item)) return true;
         }
         return false;
     });

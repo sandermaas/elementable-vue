@@ -62,6 +62,7 @@
                 filters: [
                     {
                         name: 'Small',
+                        active: false,
                         condition: function(row){
                             if (row.population < 5000000) return true;
                             return false;
@@ -69,6 +70,7 @@
                     },
                     {
                         name: 'Medium',
+                        active: true,
                         condition: function(row){
                             if (row.population >= 5000000 && row.population <= 50000000) return true;
                             return false;
@@ -76,13 +78,14 @@
                     },
                     {
                         name: 'Big',
+                        active: false,
                         condition: function(row){
                             if (row.population > 50000000) return true;
                             return false;
                         }
                     }
                 ],
-                rowsPerPage: [10, 20, 50]
+                //rowsPerPage: [10, 20, 50]
             };
         }
     }
