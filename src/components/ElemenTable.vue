@@ -13,14 +13,17 @@
         <table class="et-table">
             <thead class="et-table-head">
                 <tr>
-                    <th v-for="column in columns" :key="column.name" v-on:click="sortColumn(column)">
-                        <span>
+                    <th v-for="column in columns" :key="column.name" v-on:click="activateColumn(column)">
+                        <span v-if="column.sortable">
                             {{ column.name }}
                             <div v-if="column.name === activeColumn.name" :class="[
                                 sortDirection === 'down' ? 'arrow-down' : '',
                                 sortDirection === 'up' ? 'arrow-up' : ''
                             ]"></div>
                             <div v-else class="arrow-hidden"></div>
+                        </span>
+                        <span v-else>
+                            {{ column.name }}
                         </span>
                     </th>
                 </tr>
@@ -83,7 +86,6 @@
         },
         data(){
             return {
-                activeColumn: {},
                 page: 0,
                 rowsPerPage: this.rowsPerPageOptions[0],
                 searchInput: '',
@@ -91,6 +93,14 @@
             };
         },
         computed: {
+            activeColumn: function(){
+                const active = this.columns.find(function(column){
+                    return column.active;
+                });
+
+                if (active) return active;
+                return {};
+            },
             activeFilters: function(){
                 return this.filters.filter(function(filter){ 
                     return filter.active;
@@ -117,6 +127,19 @@
             },
         },
         methods: {
+            activateColumn: function(column){
+                if (column.sortable){
+                    if (this.activeColumn.name === column.name){
+                        if (this.sortDirection === 'down') this.sortDirection = 'up';
+                        else if (this.sortDirection === 'up') this.sortDirection = 'down';
+                    }
+
+                    this.columns.forEach((col) => {
+                        if (col.name === column.name) col.active = true;
+                        else col.active = false;
+                    });
+                }
+            },
             changeOptions: function(rowsperpage){
                 this.page = 0;
                 this.rowsPerPage = rowsperpage;
@@ -135,20 +158,7 @@
             },
             switchPage: function(newpage){
                 this.page = newpage;
-            },
-
-            
-            
-            sortColumn: function(column){
-                if (this.activeColumn.name === column.name){
-                    if (this.sortDirection === 'down') this.sortDirection = 'up';
-                    else if (this.sortDirection === 'up') this.sortDirection = 'down';
-                } else {
-                    this.sortDirection = 'down';
-                }
-
-                this.activeColumn = column;
-            }            
+            }
         }
     }
 </script>

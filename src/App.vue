@@ -21,17 +21,20 @@
                     {
                         name: 'Country',
                         selector: 'country',
-                        sortable: true
+                        sortable: true,
+                        active: false
                     },
                     {
                         name: 'Capital',
                         selector: 'capital',
-                        sortable: true
+                        sortable: true,
+                        active: false
                     },
                     {
                         name: 'Population',
                         selector: 'population',
-                        sortable: true
+                        sortable: false,
+                        active: false
                     }
                 ],
                 data: [
@@ -85,7 +88,7 @@
                         }
                     }
                 ],
-                //rowsPerPage: [10, 20, 50]
+                rowsPerPage: [10, 20, 50]
             };
         }
     }
