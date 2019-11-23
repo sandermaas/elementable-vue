@@ -145,6 +145,7 @@
                 this.rowsPerPage = rowsperpage;
             },
             filter: function(actives){
+                this.page = 0;
                 this.filters.forEach((filter) => {
                     if (actives.includes(filter.name)) filter.active = true;
                     else filter.active = false;
