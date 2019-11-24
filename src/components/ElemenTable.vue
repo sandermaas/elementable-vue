@@ -16,14 +16,20 @@
                     <th v-for="column in columns" :key="column.name" 
                         :style="styles.datatable.theadCell" 
                         v-on:click="activateColumn(column)"
+                        @mouseenter="hoverStart"
+                        @mouseleave="hoverStop"
                     >
                         <span v-if="column.sortable" :style="styles.datatable.theadSpan">
                             {{ column.name }}
-                            <div v-if="column.name === activeColumn.name" :class="[
-                                sortDirection === 'down' ? 'arrow-down' : '',
-                                sortDirection === 'up' ? 'arrow-up' : ''
-                            ]"></div>
-                            <div v-else class="arrow-hidden"></div>
+                            <div v-if="column.name === activeColumn.name && sortDirection === 'down'"
+                                class="arrow-down"
+                                :style="styles.datatable.arrowDown"
+                             ></div>
+                            <div v-else-if="column.name === activeColumn.name && sortDirection === 'up'"
+                                class="arrow-up"
+                                :style="styles.datatable.arrowUp"
+                            ></div>
+                            <div v-else class="arrow-hidden" :style="styles.datatable.arrowHidden"></div>
                         </span>
                         <span v-else :style="styles.datatable.theadSpan">
                             {{ column.name }}
@@ -32,7 +38,7 @@
                 </tr>
             </thead>
             <tbody class="et-table-body">
-                <tr v-for="(row, i) in rows" :key="i">
+                <tr v-for="(row, i) in rows" :key="i" @mouseenter="hoverStart" @mouseleave="hoverStop">
                     <td v-for="(column, j) in columns" :key="j" :style="styles.datatable.tbodyCell">
                         {{ resolve(row, column.selector) }}
                     </td>
@@ -157,6 +163,12 @@
                     if (actives.includes(filter.name)) filter.active = true;
                     else filter.active = false;
                 });
+            },
+            hoverStart: function(event){
+                event.target.style.backgroundColor = 'lightgray';
+            },
+            hoverStop: function(event){
+                event.target.style.backgroundColor = 'white';
             },
             resolve: function(obj, prop){
                 return get(obj, prop);

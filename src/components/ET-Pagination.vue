@@ -12,10 +12,10 @@
             </li>
         </ul>
         <ul class="et-pagination-section" :style="styles.pagination.section">
-            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('first')">&lt; &lt;</li>
-            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('prev')">&lt;</li>
-            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('next')">&gt;</li>
-            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('last')">&gt; &gt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('first')" @mouseenter="hoverStart" @mouseleave="hoverStop">&lt; &lt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('prev')" @mouseenter="hoverStart" @mouseleave="hoverStop">&lt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('next')" @mouseenter="hoverStart" @mouseleave="hoverStop">&gt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('last')" @mouseenter="hoverStart" @mouseleave="hoverStop">&gt; &gt;</li>
         </ul>
     </div>
 </template>
@@ -49,6 +49,12 @@
         methods: {
             changeRowsPerPage: function(){
                 this.onPageChange(this.rowsPerPage);
+            },
+            hoverStart: function(event){
+                event.target.style.backgroundColor = 'lightgray';
+            },
+            hoverStop: function(event){
+                event.target.style.backgroundColor = 'white';
             },
             switchPage: function(to){
                 if (to === 'first') this.onSwitch(0);
