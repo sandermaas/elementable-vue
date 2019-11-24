@@ -6,7 +6,10 @@ This is the Vue version of the *elementable* datatable. I know, another datatabl
 ```
 npm install elementable-vue
 ```
-
+### Import
+```
+import ElemenTable from 'elementable-vue'
+```
 ### Configuration
 
 You can use the following properties with the component:
