@@ -1,6 +1,6 @@
 <template>
-    <div class="et-pagination">
-        <ul class="et-pagination-section">
+    <div class="et-pagination" :style="styles.pagination.root">
+        <ul class="et-pagination-section" :style="styles.pagination.section">
             <li>{{ pageCount }} of {{ totalCount }}</li>
             <li>{{ currentPage + 1 }} / {{ lastPage }}</li>
             <li>
@@ -11,16 +11,18 @@
                 </select>
             </li>
         </ul>
-        <ul class="et-pagination-section">
-            <li class="paging-item" v-on:click="switchPage('first')">&lt; &lt;</li>
-            <li class="paging-item" v-on:click="switchPage('prev')">&lt;</li>
-            <li class="paging-item" v-on:click="switchPage('next')">&gt;</li>
-            <li class="paging-item" v-on:click="switchPage('last')">&gt; &gt;</li>
+        <ul class="et-pagination-section" :style="styles.pagination.section">
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('first')">&lt; &lt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('prev')">&lt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('next')">&gt;</li>
+            <li class="paging-item" :style="styles.pagination.pagingItem" v-on:click="switchPage('last')">&gt; &gt;</li>
         </ul>
     </div>
 </template>
 
 <script>
+    import pagination from '../common/elementable.styles.js'
+
     export default {
         name: 'EtPagination',
         props: {
@@ -39,6 +41,9 @@
         computed: {
              lastPage: function(){
                 return Math.ceil(this.totalCount / this.rowsPerPage);
+            },
+            styles: function(){
+                return pagination;
             }
         },
         methods: {
@@ -61,7 +66,8 @@
     }
 </script>
 
-<style scoped>
+<!--
+<style module>
     .et-pagination {
         display: flex;
         justify-content: space-between;
@@ -84,3 +90,4 @@
         border-radius: 5px;
     }
 </style>
+-->

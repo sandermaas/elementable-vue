@@ -1,6 +1,6 @@
 <template>
     <div class="et-root">
-        <div class="et-header">
+        <div class="et-header" :style="styles.datatable.header">
             <EtSearchBar 
                 :onSearch="search"
             ></EtSearchBar>
@@ -10,11 +10,14 @@
             ></EtFilterSection>
         </div>
 
-        <table class="et-table">
+        <table class="et-table" :style="styles.datatable.table">
             <thead class="et-table-head">
-                <tr>
-                    <th v-for="column in columns" :key="column.name" v-on:click="activateColumn(column)">
-                        <span v-if="column.sortable">
+                <tr :style="styles.datatable.theadRow">
+                    <th v-for="column in columns" :key="column.name" 
+                        :style="styles.datatable.theadCell" 
+                        v-on:click="activateColumn(column)"
+                    >
+                        <span v-if="column.sortable" :style="styles.datatable.theadSpan">
                             {{ column.name }}
                             <div v-if="column.name === activeColumn.name" :class="[
                                 sortDirection === 'down' ? 'arrow-down' : '',
@@ -22,7 +25,7 @@
                             ]"></div>
                             <div v-else class="arrow-hidden"></div>
                         </span>
-                        <span v-else>
+                        <span v-else :style="styles.datatable.theadSpan">
                             {{ column.name }}
                         </span>
                     </th>
@@ -30,7 +33,7 @@
             </thead>
             <tbody class="et-table-body">
                 <tr v-for="(row, i) in rows" :key="i">
-                    <td v-for="(column, j) in columns" :key="j">
+                    <td v-for="(column, j) in columns" :key="j" :style="styles.datatable.tbodyCell">
                         {{ resolve(row, column.selector) }}
                     </td>
                 </tr>
@@ -51,6 +54,7 @@
 <script>
     import get from 'lodash/get'
     import etService from '../common/elementable.service'
+    import datatable from '../common/elementable.styles.js'
     import EtSearchBar from './ET-SearchBar'
     import EtFilterSection from './ET-FilterSection'
     import EtPagination from './ET-Pagination'
@@ -125,6 +129,9 @@
             rowsCount: function(){
                 return this.rows.length;
             },
+            styles: function(){
+                return datatable;
+            }
         },
         methods: {
             activateColumn: function(column){
@@ -164,7 +171,8 @@
     }
 </script>
 
-<style scoped>
+<!--
+<style module>
     .et-header {
         display: flex;
         justify-content: space-between;
@@ -222,3 +230,4 @@
         border-bottom: 8px solid transparent;
     }
 </style>
+-->

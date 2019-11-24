@@ -1,14 +1,16 @@
 <template>
-    <div class="et-filter-section">
-        <span v-for="filter in filters" :key="filter.name" v-on:click="selectFilter">
-            <input v-if="filter.active" type="checkbox" :value="filter.name" checked />
-            <input v-else type="checkbox" :value="filter.name" />
+    <div class="et-filter-section" :style="styles.filtersection.root">
+        <span v-for="filter in filters" :key="filter.name" :style="styles.filtersection.span" v-on:click="selectFilter">
+            <input v-if="filter.active" type="checkbox" :value="filter.name" checked :style="styles.filtersection.input" />
+            <input v-else type="checkbox" :value="filter.name" :style="styles.filtersection.input" />
             {{ filter.name }}
         </span>
     </div>
 </template>
 
 <script>
+    import filtersection from '../common/elementable.styles.js'
+
     export default {
         name: 'EtFilterSection',
         props: {
@@ -24,6 +26,11 @@
             this.filters.forEach((filter) => {
                 if (filter.active) this.activeFilters.push(filter.name);
             });
+        },
+        computed: {
+            styles: function(){
+                return filtersection;
+            }
         },
         methods: {
             selectFilter: function(event){
@@ -51,18 +58,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .et-filter-section {
-        display: flex;
-        justify-content: space-between;
-        width: 30%;
-    }
-    .et-filter-section span {
-        display: flex;
-        user-select: none;
-    }
-    .et-filter-section span:hover {
-        cursor: pointer;
-    }
-</style>

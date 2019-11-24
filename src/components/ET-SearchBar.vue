@@ -1,12 +1,25 @@
 <template>
-    <input class="et-searchbar" type="text" placeholder="Search..." v-on:input="searchData" />
+    <input 
+        class="et-searchbar"
+        :style="styles.searchbar.root"
+        type="text" 
+        placeholder="Search..." 
+        v-on:input="searchData" 
+    />
 </template>
 
 <script>
+    import searchbar from '../common/elementable.styles.js'
+
     export default {
         name: 'EtSearchBar',
         props: {
             onSearch: Function
+        },
+        computed: {
+            styles: function(){
+                return searchbar;
+            }
         },
         methods: {
             searchData: function(event){
@@ -15,10 +28,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .et-searchbar {
-        padding: 5px;
-        width: 25%;
-    }
-</style>
