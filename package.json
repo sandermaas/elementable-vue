@@ -1,6 +1,6 @@
 {
     "name": "elementable-vue",
-    "version": "0.1.2",
+    "version": "0.1.4",
     "description": "The elementable component for Vue js",
     "author": {
         "name": "Sander Maas",
@@ -25,13 +25,12 @@
         "build:npm": "vue-cli-service build --target lib --name elementable-vue src/components/ElemenTable.vue",
         "lint": "vue-cli-service lint"
     },
-    "main": "dist/ElemenTable.umd.js",
-    "unpkg": "dist/ElemenTable.umd.min.js",
+    "main": "dist/elementable-vue.umd.js",
+    "unpkg": "dist/elementable-vue.umd.min.js",
     "dependencies": {
         "core-js": "^3.3.2",
         "lodash": "^4.17.15",
-        "vue": "^2.6.10",
-        "vuejs-logger": "^1.5.3"
+        "vue": "^2.6.10"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^4.0.0",
@@ -40,6 +39,7 @@
         "babel-eslint": "^10.0.3",
         "eslint": "^5.16.0",
         "eslint-plugin-vue": "^5.0.0",
+        "vuejs-logger": "^1.5.3",
         "vue-template-compiler": "^2.6.10"
     },
     "eslintConfig": {
