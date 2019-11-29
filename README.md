@@ -6,7 +6,10 @@ This is the Vue version of the *elementable* datatable. I know, another datatabl
 ```
 npm install elementable-vue
 ```
-
+### Import
+```
+import ElemenTable from 'elementable-vue'
+```
 ### Configuration
 
 You can use the following properties with the component:
@@ -18,12 +21,14 @@ Required
 
 This is your collection of columns. Every column is an object which you can assign the following properties to:
 
-| Property | Type    | Description                                                 |
-| -------- | ------- | ----------------------------------------------------------- |
-| name     | string  | The name of the column, this will show as the column header |
-| selector | string  | The property in the data object in dot notation             |
-| sortable | boolean | Define if the column should be sortable or not              |
-| active   | boolean | Set an active column, this can only be applied to one       |
+| Property   | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| active     | boolean | Set an active column, this can only be applied to one       |
+| filterable | boolean | Make this column available to be filtered                   |
+| name       | string  | The name of the column, this will show as the column header |
+| selector   | string  | The property in the data object in dot notation             |
+| sortable   | boolean | Define if the column should be sortable or not              |
+| type       | type    | Set this as String or Number                                |
 
 **data**
 
@@ -31,19 +36,6 @@ Type: Array<br/>
 Required
 
 Every element of the data array represents a row in the table and should be an object with at least the properties defined in the columns array.
-
-**filters**
-
-Type: Array<br/>
-Default: []
-
-If you want some pre-defined filters to interact with the data you can add some to the filters array. Every filter is an object with the following properties: 
-
-| Property  | Type     | Description                                                        |
-| --------- | -------- | ------------------------------------------------------------------ |
-| name      | string   | The name of the filter, it will show in the top right corner       |
-| active    | boolean  | Set this to true if you want the filter active by default          |
-| condition | function | A function that returns true or false, depending on some condition |
 
 **rowsPerPageOptions**
 

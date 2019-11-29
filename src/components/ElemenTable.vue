@@ -1,12 +1,19 @@
 <template>
     <div class="et-root">
         <div class="et-header" :style="styles.datatable.header">
-            <EtSearchBar 
-                :onSearch="search"
-            ></EtSearchBar>
-            <EtFilterSection 
-                :filters="filters"
-                :onFilter="filter"
+            <div :style="styles.datatable.headerContent">
+                <EtSearchBar 
+                    :onSearch="search"
+                ></EtSearchBar>
+                <EtFilterButton
+                    :onClick="showFilters"
+                >
+                </EtFilterButton>
+            </div>
+            <EtFilterSection
+                :columns="filterColumns"
+                :onFilterChange="filter"
+                :visible="filtersVisible"
             ></EtFilterSection>
         </div>
 
@@ -62,6 +69,7 @@
     import etService from '../common/elementable.service'
     import datatable from '../common/elementable.styles.js'
     import EtSearchBar from './ET-SearchBar'
+    import EtFilterButton from './ET-FilterButton'
     import EtFilterSection from './ET-FilterSection'
     import EtPagination from './ET-Pagination'
 
@@ -69,6 +77,7 @@
         name: 'ElemenTable',
         components: {
             EtSearchBar,
+            EtFilterButton,
             EtFilterSection,
             EtPagination
         },
@@ -81,12 +90,6 @@
                 type: Array,
                 required: true
             },
-            filters: {
-                type: Array,
-                default: function(){
-                    return [];
-                }
-            },
             rowsPerPageOptions: {
                 type: Array,
                 default: function(){
@@ -96,6 +99,8 @@
         },
         data(){
             return {
+                activeFilters: [],
+                filtersVisible: false,
                 page: 0,
                 rowsPerPage: this.rowsPerPageOptions[0],
                 searchInput: '',
@@ -111,9 +116,9 @@
                 if (active) return active;
                 return {};
             },
-            activeFilters: function(){
-                return this.filters.filter(function(filter){ 
-                    return filter.active;
+            filterColumns: function(){
+                return this.columns.filter(function(column){
+                    return column.filterable;
                 });
             },
             results: function(){
@@ -157,12 +162,9 @@
                 this.page = 0;
                 this.rowsPerPage = rowsperpage;
             },
-            filter: function(actives){
+            filter: function(filters){
                 this.page = 0;
-                this.filters.forEach((filter) => {
-                    if (actives.includes(filter.name)) filter.active = true;
-                    else filter.active = false;
-                });
+                this.activeFilters = filters;
             },
             hoverStart: function(event){
                 event.target.style.backgroundColor = 'lightgray';
@@ -175,6 +177,9 @@
             },
             search: function(input){
                 this.searchInput = input;
+            },
+            showFilters: function(){
+                this.filtersVisible = !this.filtersVisible;
             },
             switchPage: function(newpage){
                 this.page = newpage;

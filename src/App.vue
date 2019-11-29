@@ -2,7 +2,6 @@
     <ElemenTable
         :columns="columns"
         :data="data"
-        :filters="filters"
         :rowsPerPageOptions="rowsPerPage"
     ></ElemenTable>
 </template>
@@ -20,21 +19,27 @@
                 columns: [
                     {
                         name: 'Country',
+                        type: String,
                         selector: 'country',
                         sortable: true,
-                        active: false
+                        active: false,
+                        filterable: true
                     },
                     {
                         name: 'Capital',
+                        type: String,
                         selector: 'capital',
                         sortable: true,
-                        active: false
+                        active: false,
+                        filterable: true
                     },
                     {
                         name: 'Population',
+                        type: Number,
                         selector: 'population',
                         sortable: false,
-                        active: false
+                        active: false,
+                        filterable: true
                     }
                 ],
                 data: [
@@ -61,32 +66,6 @@
                     {country:'Ukraine',capital:'Kiev',population:42030832},
                     {country:'Venezuela',capital:'Caracas',population:31568179},
                     {country:'Wales',capital:'Cardiff',population:3125000}
-                ],
-                filters: [
-                    {
-                        name: 'Small',
-                        active: false,
-                        condition: function(row){
-                            if (row.population < 5000000) return true;
-                            return false;
-                        }
-                    },
-                    {
-                        name: 'Medium',
-                        active: true,
-                        condition: function(row){
-                            if (row.population >= 5000000 && row.population <= 50000000) return true;
-                            return false;
-                        }
-                    },
-                    {
-                        name: 'Big',
-                        active: false,
-                        condition: function(row){
-                            if (row.population > 50000000) return true;
-                            return false;
-                        }
-                    }
                 ],
                 rowsPerPage: [10, 20, 50]
             };

@@ -1,5 +1,23 @@
+export const button = {
+    cursor: 'pointer',
+    padding: '5px 50px 5px 50px',
+    backgroundColor: 'white',
+    border: '1px solid black'
+};
+
+export const input = {
+    padding: '5px 10px 5px 10px'
+};
+
+export const ul = {
+    listStyle: 'none'
+};
+
 export const datatable = {
     header: {
+        marginBottom: '10px'
+    },
+    headerContent: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -58,19 +76,12 @@ export const searchbar = {
     }
 };
 
-export const filtersection = {
-    root: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: '30%'
-    },
-    span: {
-        display: 'flex',
-        userSelect: 'none',
-        cursor: 'pointer'
-    },
-    input: {
-        cursor: 'pointer'
+export const filterbutton = {
+    button: {
+        cursor: 'pointer',
+        padding: '5px 50px 5px 50px',
+        backgroundColor: 'white',
+        border: '1px solid black'
     }
 };
 
@@ -94,4 +105,4 @@ export const pagination = {
     }
 };
 
-export default { datatable, searchbar, filtersection, pagination };
+export default { button, datatable, ul, searchbar, filterbutton, pagination };

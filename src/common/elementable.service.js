@@ -32,12 +32,20 @@ const compare = function(prop){
 };
 
 export const filter = function(data, activefilters){
+    activefilters.forEach((activefilter) => {
+        data = data.filter(function(item){
+            if (activefilter.condition(item)) return true;
+        });
+    });
+
+    /*
     data = data.filter(function(item){
         for (var i = 0, iLength = activefilters.length; i < iLength; i++){
             if (activefilters[i].condition(item)) return true;
         }
         return false;
     });
+    */
 
     return data;
 };
