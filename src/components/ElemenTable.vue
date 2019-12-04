@@ -1,85 +1,129 @@
 <template>
     <div class="et-root">
-        <div class="et-header" :style="styles.datatable.header">
-            <div :style="styles.datatable.headerContent">
-                <EtSearchBar 
-                    :onSearch="search"
-                ></EtSearchBar>
-                <EtFilterButton
-                    :onClick="showFilters"
-                >
-                </EtFilterButton>
-            </div>
-            <EtFilterSection
-                :columns="filterColumns"
-                :onFilterChange="filter"
-                :visible="filtersVisible"
-            ></EtFilterSection>
-        </div>
+        <et-grid :styling="{ marginBottom: '10px' }">
+            <et-grid-row>
+                <et-grid-column width=8>
+                    <et-input-text @input="search" placeholder="Search.." :styling="{ width: '50%' }"></et-input-text>
+                </et-grid-column>
+                <et-grid-column width=8 align="right">
+                    <et-button @click="showFilters" hoverColor="darkgray">Filter</et-button>
+                </et-grid-column>
+            </et-grid-row>
+            <et-grid-row>
+                <et-grid-column width=16>
+                    <EtFilterSection
+                        :columns="filterColumns"
+                        :onFilterChange="filter"
+                        :visible="filtersVisible"
+                    ></EtFilterSection>
+                </et-grid-column>
+            </et-grid-row>
+        </et-grid>
 
-        <table class="et-table" :style="styles.datatable.table">
-            <thead class="et-table-head">
-                <tr :style="styles.datatable.theadRow">
-                    <th v-for="column in columns" :key="column.name" 
-                        :style="styles.datatable.theadCell" 
-                        v-on:click="activateColumn(column)"
-                        @mouseenter="hoverStart"
-                        @mouseleave="hoverStop"
+        <et-table>
+            <et-table-head>
+                <et-table-row :head="true">
+                    <et-table-header v-for="column in columns" :key="column.name"
+                        :active="activeColumn.name === column.name"
+                        :sortDirection="sortDirection"
+                        :sortable="column.sortable"
+                        @click="activateColumn(column)"
                     >
-                        <span v-if="column.sortable" :style="styles.datatable.theadSpan">
-                            {{ column.name }}
-                            <div v-if="column.name === activeColumn.name && sortDirection === 'down'"
-                                class="arrow-down"
-                                :style="styles.datatable.arrowDown"
-                             ></div>
-                            <div v-else-if="column.name === activeColumn.name && sortDirection === 'up'"
-                                class="arrow-up"
-                                :style="styles.datatable.arrowUp"
-                            ></div>
-                            <div v-else class="arrow-hidden" :style="styles.datatable.arrowHidden"></div>
-                        </span>
-                        <span v-else :style="styles.datatable.theadSpan">
-                            {{ column.name }}
-                        </span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="et-table-body">
-                <tr v-for="(row, i) in rows" :key="i" @mouseenter="hoverStart" @mouseleave="hoverStop">
-                    <td v-for="(column, j) in columns" :key="j" :style="styles.datatable.tbodyCell">
+                        {{ column.name }}
+                    </et-table-header>
+                </et-table-row>
+            </et-table-head>
+            <et-table-body>
+                <et-table-row v-for="(row, i) in rows" :key="i">
+                    <et-table-cell v-for="(column, j) in columns" :key="j">
                         {{ resolve(row, column.selector) }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </et-table-cell>
+                </et-table-row>
+            </et-table-body>
+        </et-table>
 
-        <EtPagination
-            :currentPage="page"
-            :onPageChange="changeOptions"
-            :onSwitch="switchPage"
-            :pageCount="rowsCount"
-            :rowsPerPageOptions="rowsPerPageOptions"
-            :totalCount="resultsCount"
-        ></EtPagination>
+        <et-grid :styling="{ marginTop: '20px' }">
+            <et-grid-row>
+                <et-grid-space width=1 />
+                <et-grid-column width=5>
+                    <et-grid>
+                        <et-grid-row>
+                            <et-grid-column width=5>
+                                <et-pagination-results
+                                    :displayResults="rowsCount"
+                                    :totalResults="resultsCount"
+                                ></et-pagination-results>
+                            </et-grid-column>
+                            <et-grid-column width=5>
+                                <et-pagination-pages
+                                    :currentPage="page + 1"
+                                    :lastPage="lastPage"
+                                ></et-pagination-pages>
+                            </et-grid-column>
+                            <et-grid-column width=5>
+                                <et-pagination-options
+                                    :options="rowsPerPageOptions"
+                                    @change="changeOptions"
+                                >
+                                </et-pagination-options>
+                            </et-grid-column>
+                        </et-grid-row>
+                    </et-grid>
+                </et-grid-column>
+                <et-grid-space width=4 />
+                <et-grid-column width=5>
+                    <et-pagination
+                        :totalPages="lastPage"
+                        @change="switchPage"
+                    ></et-pagination>
+                </et-grid-column>
+                <et-grid-space width=1 />
+            </et-grid-row>
+        </et-grid>
     </div>
 </template>
 
 <script>
     import get from 'lodash/get'
     import etService from '../common/elementable.service'
-    import datatable from '../common/elementable.styles.js'
-    import EtSearchBar from './ET-SearchBar'
-    import EtFilterButton from './ET-FilterButton'
     import EtFilterSection from './ET-FilterSection'
-    import EtPagination from './ET-Pagination'
+    import EtButton from './button/et-button'
+    import EtGrid from './grid/et-grid'
+    import EtGridRow from './grid/et-grid-row'
+    import EtGridColumn from './grid/et-grid-column'
+    import EtGridSpace from './grid/et-grid-space'
+    import EtInputText from './input/et-input-text'
+    import EtPagination from './pagination/et-pagination'
+    import EtPaginationResults from './pagination/et-pagination-results'
+    import EtPaginationPages from './pagination/et-pagination-pages'
+    import EtPaginationOptions from './pagination/et-pagination-options'
+    import EtTable from './table/et-table'
+    import EtTableHead from './table/et-table-head'
+    import EtTableBody from './table/et-table-body'
+    import EtTableRow from './table/et-table-row'
+    import EtTableHeader from './table/et-table-header'
+    import EtTableCell from './table/et-table-cell'
 
     export default {
         name: 'ElemenTable',
         components: {
-            EtSearchBar,
-            EtFilterButton,
-            EtFilterSection,
-            EtPagination
+            'et-button': EtButton,
+            'et-grid': EtGrid,
+            'et-grid-row': EtGridRow,
+            'et-grid-column': EtGridColumn,
+            'et-grid-space': EtGridSpace,
+            'et-input-text': EtInputText,
+            'et-pagination': EtPagination,
+            'et-pagination-results': EtPaginationResults,
+            'et-pagination-pages': EtPaginationPages,
+            'et-pagination-options': EtPaginationOptions,
+            'et-table': EtTable,
+            'et-table-head': EtTableHead,
+            'et-table-body': EtTableBody,
+            'et-table-row': EtTableRow,
+            'et-table-header': EtTableHeader,
+            'et-table-cell': EtTableCell,
+            EtFilterSection
         },
         props: {
             columns: {
@@ -121,6 +165,9 @@
                     return column.filterable;
                 });
             },
+            lastPage: function(){
+                return Math.ceil(this.resultsCount / this.rowsPerPage);
+            },
             results: function(){
                 let data = this.data;
                 // ORDER
@@ -139,9 +186,6 @@
             },
             rowsCount: function(){
                 return this.rows.length;
-            },
-            styles: function(){
-                return datatable;
             }
         },
         methods: {
@@ -166,85 +210,18 @@
                 this.page = 0;
                 this.activeFilters = filters;
             },
-            hoverStart: function(event){
-                event.target.style.backgroundColor = 'lightgray';
-            },
-            hoverStop: function(event){
-                event.target.style.backgroundColor = 'white';
-            },
             resolve: function(obj, prop){
                 return get(obj, prop);
             },
-            search: function(input){
-                this.searchInput = input;
+            search: function(value){
+                this.searchInput = value;
             },
             showFilters: function(){
                 this.filtersVisible = !this.filtersVisible;
             },
             switchPage: function(newpage){
-                this.page = newpage;
+                this.page = newpage - 1;
             }
         }
     }
 </script>
-
-<!--
-<style module>
-    .et-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .et-table {
-        border-collapse:collapse;
-        width: 100%;
-        text-align: left;
-    }
-    .et-table-head tr {
-        border-bottom: 1px solid black;
-    }
-    .et-table-head th {
-        user-select: none;
-        padding: 10px;
-    }
-    .et-table-head th:hover {
-        background-color: lightgrey;
-    }
-    .et-table-head th > span {
-        display: flex;
-        align-items: center;
-    }
-    .et-table-body td {
-        padding: 5px 10px 5px 10px;
-    }
-    .et-table-body tr:hover {
-        background-color: lightgrey;
-    }
-    .arrow-down {
-        margin-left: 20px;
-        width: 0; 
-        height: 0; 
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 8px solid black;
-    }
-    .arrow-up {
-        margin-left: 20px;
-        width: 0; 
-        height: 0; 
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-bottom: 8px solid black;
-    }
-    .arrow-hidden {
-        opacity: 0;
-        margin-left: 20px;
-        width: 0; 
-        height: 0; 
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent;
-    }
-</style>
--->
